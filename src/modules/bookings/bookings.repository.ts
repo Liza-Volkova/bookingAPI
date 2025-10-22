@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
 import { Booking } from './entities/booking.entity';
+import { TopDto } from './dto/top.dto';
 
 @Injectable()
 export class BookingsRepository {
@@ -41,4 +42,20 @@ export class BookingsRepository {
       relations: ['event'],
     });
   }
+
+  async getTop(): Promise<TopDto[]> {
+    const results = await this.repository.query(`
+      SELECT "userId", COUNT(*) as booking_count
+      FROM booking 
+      GROUP BY "userId"
+      ORDER BY booking_count DESC 
+      LIMIT 10
+    `);
+    
+    return results.map((user: any, i: number) => ({
+      ...user,
+      place: i + 1
+    }));
+  }
+
 }

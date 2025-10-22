@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Booking } from './entities/booking.entity';
+import { TopDto } from './dto/top.dto';
 
 @ApiTags('Bookings')
 @Controller('api/bookings')
@@ -27,5 +28,10 @@ export class BookingsController {
   @Get('user/:userId')
   findByUser(@Param('userId') userId: string): Promise<Booking[]> {
     return this.bookingsService.findByUserId(userId);
+  }
+
+  @Get('top')
+  getTop(): Promise<TopDto[]> {
+    return this.bookingsService.getTop();
   }
 }

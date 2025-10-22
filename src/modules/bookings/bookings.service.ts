@@ -8,6 +8,7 @@ import { Booking } from './entities/booking.entity';
 import { Event } from '../events/entities/event.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { BookingsRepository } from './bookings.repository';
+import { TopDto } from './dto/top.dto';
 
 @Injectable()
 export class BookingsService {
@@ -63,5 +64,9 @@ export class BookingsService {
 
   findByUserId(userId: string): Promise<Booking[]> {
     return this.bookingsRepository.findByUserWithDetails(userId);
+  }
+
+  getTop(): Promise<TopDto[]> {
+    return this.bookingsRepository.getTop();
   }
 }
